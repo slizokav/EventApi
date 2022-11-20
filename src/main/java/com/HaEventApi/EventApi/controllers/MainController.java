@@ -10,9 +10,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController()
@@ -28,18 +30,37 @@ public class MainController {
 
 
     @PostMapping("/registration")
-    public HttpEntity<HttpStatus> create(@RequestBody @Valid User user, BindingResult bindingResult){
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid User user, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            throw new LoginInvalidException();
+            StringBuilder stringBuilder = new StringBuilder();
+
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for(FieldError fieldError : errors){
+                stringBuilder.append(fieldError.getField())
+                        .append(" - ")
+                        .append(fieldError.getDefaultMessage())
+                        .append(";");
+            }
+            throw new LoginInvalidException(stringBuilder.toString());
         }
 
         userDetailsServiceSecurity.save(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @GetMapping("/people")
+    public List<User> getPeople(){
+        return userDetailsServiceSecurity.findAll();
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "it's test";
+    }
+
     @ExceptionHandler
     private ResponseEntity<UserErrorResponse> handleException(LoginInvalidException loginInvalidException){
-        UserErrorResponse userErrorResponse = new UserErrorResponse("Неправильно введены данные пользователя");
+        UserErrorResponse userErrorResponse = new UserErrorResponse(loginInvalidException.getMessage());
         return new ResponseEntity<>(userErrorResponse, HttpStatus.BAD_REQUEST);
     }
 

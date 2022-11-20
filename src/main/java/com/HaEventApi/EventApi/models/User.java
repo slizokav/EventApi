@@ -2,11 +2,11 @@ package com.HaEventApi.EventApi.models;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "user")
+@Table(name = "people")
 public class User {
 
     @Id
@@ -16,11 +16,13 @@ public class User {
 
 
     @Column(name = "username")
-    @NotNull(message = "Имя пользователя не должно быть пустым")
+    @NotEmpty(message = "Имя пользователя не должно быть пустым")
+    @Size(min = 2, max = 100, message = "Недопустимое значение имени пользователя")
     private String username;
 
 
     @Column(name = "password")
+    @NotEmpty(message = "Пароль не должен быть пустым")
     private String password;
 
 

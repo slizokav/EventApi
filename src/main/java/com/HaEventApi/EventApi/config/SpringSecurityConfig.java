@@ -1,3 +1,4 @@
+
 package com.HaEventApi.EventApi.config;
 
 
@@ -37,3 +38,4 @@ private final UserDetailsServiceSecurity userDetailsServiceSecurity;
 
 
 }
+
