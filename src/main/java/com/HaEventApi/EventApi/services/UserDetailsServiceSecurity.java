@@ -23,6 +23,7 @@ public class UserDetailsServiceSecurity implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    //Метод на поиск пользователя в БД
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);

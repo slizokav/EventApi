@@ -1,6 +1,5 @@
 package com.HaEventApi.EventApi.models;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -14,17 +13,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @Column(name = "username")
     @NotEmpty(message = "Имя пользователя не должно быть пустым")
     @Size(min = 2, max = 100, message = "Недопустимое значение имени пользователя")
     private String username;
 
-
     @Column(name = "password")
     @NotEmpty(message = "Пароль не должен быть пустым")
     private String password;
-
 
     public User(String username, String password) {
         this.username = username;

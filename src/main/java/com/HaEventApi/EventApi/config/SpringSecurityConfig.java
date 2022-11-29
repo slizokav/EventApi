@@ -1,9 +1,8 @@
-
 package com.HaEventApi.EventApi.config;
-
 
 import com.HaEventApi.EventApi.services.UserDetailsServiceSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    // Конфигурация Spring Security через DetailService в методе configure
 private final UserDetailsServiceSecurity userDetailsServiceSecurity;
 
     @Autowired
@@ -32,10 +32,9 @@ private final UserDetailsServiceSecurity userDetailsServiceSecurity;
         auth.userDetailsService(userDetailsServiceSecurity);
     }
 
+    @Bean
     public PasswordEncoder getPasswordEncoder(){
         return NoOpPasswordEncoder.getInstance();
     }
-
-
 }
 
