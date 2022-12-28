@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserDetailsServiceSecurity implements UserDetailsService {
+public class UserDetailsServiceSecurityService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserDetailsServiceSecurity(UserRepository userRepository) {
+    public UserDetailsServiceSecurityService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    //Метод на поиск пользователя в БД
+    //Метод для поиска пользователя в БД
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
@@ -36,10 +36,4 @@ public class UserDetailsServiceSecurity implements UserDetailsService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
-
-    @Transactional
-    public void save(User user){
-        userRepository.save(user);
-    }
-
 }

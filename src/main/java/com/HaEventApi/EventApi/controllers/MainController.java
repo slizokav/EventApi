@@ -1,11 +1,11 @@
 package com.HaEventApi.EventApi.controllers;
 
 import com.HaEventApi.EventApi.models.User;
-import com.HaEventApi.EventApi.services.UserDetailsServiceSecurity;
+import com.HaEventApi.EventApi.services.RegistrationService;
+import com.HaEventApi.EventApi.services.UserDetailsServiceSecurityService;
 import com.HaEventApi.EventApi.util.LoginInvalidException;
 import com.HaEventApi.EventApi.util.UserErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,11 +19,13 @@ import java.util.List;
 @RequestMapping("/api")
 public class MainController {
 
-    private final UserDetailsServiceSecurity userDetailsServiceSecurity;
+    private final UserDetailsServiceSecurityService userDetailsServiceSecurityService;
+    private final RegistrationService registrationService;
 
     @Autowired
-    public MainController(UserDetailsServiceSecurity userDetailsServiceSecurity) {
-        this.userDetailsServiceSecurity = userDetailsServiceSecurity;
+    public MainController(UserDetailsServiceSecurityService userDetailsServiceSecurityService, RegistrationService registrationService) {
+        this.userDetailsServiceSecurityService = userDetailsServiceSecurityService;
+        this.registrationService = registrationService;
     }
 
     // API метод на получения данных от клиента, а также их валидации и произведение дальнейшей регистрации
@@ -43,12 +45,12 @@ public class MainController {
             throw new LoginInvalidException(stringBuilder.toString());
         }
 
-        userDetailsServiceSecurity.save(user);
+        registrationService.save(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/people")
     public List<User> getPeople(){
-        return userDetailsServiceSecurity.findAll();
+        return userDetailsServiceSecurityService.findAll();
     }
 
     // Обработка исключения в ходе ввода неправильных данных и выдача ответа клиенту
